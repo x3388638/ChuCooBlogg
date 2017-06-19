@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Blog</title>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<script
 	src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -12,6 +13,79 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 </head>
 <body>
-	
+	<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a class="navbar-brand" href="/">Blogg</a>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+			</ul>
+			<button id="btn-user" class="btn btn-outline-primary mr-1 my-2 my-sm-0"><i class="fa fa-user" aria-hidden="true"></i></button>
+			<button id="btn-logout" class="btn btn-outline-danger my-2 my-sm-0">Logout</button>
+		</div>
+	</nav>
+	<div class="container pt-5">
+		<div class="row mb-3">
+			<div class="col-8 offset-2">
+				<button class="btn btn-primary" data-toggle="modal" data-target="#modal-createPost">
+					Create post
+				</button>
+			</div>
+		</div>
+		<div id="post">
+			<div class="row">
+				<div class="col-8 offset-2">
+					<div class="card">
+						<div class="card-block">
+							<h4 class="card-title">Card title</h4>
+							<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							<a href="#" class="card-link">Card link</a>
+							<a href="#" class="card-link">Another link</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal: create post -->
+	<div class="modal fade" id="modal-createPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">New post</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label for="newTitle" class="col-2 col-form-label">Title</label>
+						<div class="col-10">
+							<input class="form-control" type="text" id="newTitle">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="newTags" class="col-2 col-form-label">Tags</label>
+						<div class="col-10">
+							<input class="form-control" type="text" id="newTags">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="newTags" class="col-2 col-form-label">Content</label>
+						<div class="col-10">
+							<textarea class="form-control" id="newContent"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="btn-createPost" type="button" class="btn btn-primary">Create</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="./js/index.js"></script>
 </body>
 </html>

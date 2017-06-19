@@ -17,10 +17,14 @@ var login = (function () {
 			}, 
 			success: function (data) {
 				console.log(data);
+				localStorage.userData = JSON.stringify(data);
 				location.href = '/';
 			},
-			error: function (jqXHR) {
+			error: function (jqXHR, statusCode, c) {
 				console.log(jqXHR);
+				if (jqXHR.status == 401) {
+					alert('Wrong password.');
+				}
 			}
 		})
 	}
