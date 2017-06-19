@@ -36,6 +36,37 @@ app.post('/login', function (req, res) {
 	}
 });
 
+app.post('/logout', function (req, res) {
+	if (isLogin(req.cookies._nodejs_session)) {
+		_cookie = null;
+		res.json({
+			msg: 'logout'
+		})
+	} else {
+		res.status(401).json({
+			msg: 'no login'
+		})
+	}
+});
+
+app.get('/authors', function (req, res) {
+	if (isLogin(req.cookies._nodejs_session)) {
+		var user = Object.assign({}, _userInfo);
+		delete user.password;
+		res.json({
+			user
+		});
+	} else {
+		res.status(401).json({
+			msg: 'no login'
+		});
+	}
+});
+
+function isLogin(cookie) {
+	return cookie == _cookie;
+}
+
 http.listen(65432, function(){
 	console.log('listening on http://127.0.0.1:65432');
 });
