@@ -8,7 +8,7 @@ var login = (function () {
 		var username = $('#username').val();
 		var password = $('#password').val();
 		$.ajax({
-			url: '/login',
+			url: `${CONFIG.API_BASE}/login`,
 			type: 'post',
 			dataType: 'json',
 			data: {

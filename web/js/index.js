@@ -11,7 +11,7 @@ var index = (function () {
 
 	function _handleLogout() {
 		$.ajax({
-			url: '/logout', 
+			url: `${CONFIG.API_BASE}/logout`, 
 			type: 'post', 
 			dataType: 'json', 
 			success: function (data) {
@@ -28,7 +28,7 @@ var index = (function () {
 
 	function _handelOpenUserModal() {
 		$.ajax({
-			url: '/authors',
+			url: `${CONFIG.API_BASE}/authors`,
 			type: 'get',
 			dataType: 'json',
 			success: function (data) {
@@ -81,7 +81,7 @@ var index = (function () {
 		var tags = $('#newTags').val().split(',');
 		var content = $('#newContent').val();
 		$.ajax({
-			url: '/posts', 
+			url: `${CONFIG.API_BASE}/posts`, 
 			type: 'post', 
 			dataType: 'json',
 			data: {
@@ -105,7 +105,7 @@ var index = (function () {
 
 	function _renderPost() {
 		$.ajax({
-			url: '/posts',
+			url: `${CONFIG.API_BASE}/posts`,
 			type: 'get',
 			dataType: 'json',
 			success: function (data) {
