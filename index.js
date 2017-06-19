@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var http = require('http').Server(app);
+var moment = require('moment');
 
 var _cookie = null;
 var _userInfo = {
@@ -12,7 +13,22 @@ var _userInfo = {
 	gender: 'm',
 	address: 'Puli'
 };
-var _posts = [];
+var _posts = [
+	// {
+	// 	id: 0,
+	// 	title: '',
+	// 	content: '',
+	// 	updated_at: '',
+	// 	created_at: '',
+	// 	author: {
+	// 		username: '',
+	// 		name: '',
+	// 		gender: '',
+	// 		address: ''
+	// 	},
+	// 	tags: []
+	// }
+];
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -81,6 +97,37 @@ app.patch('/authors/:id', function (req, res) {
 			msg: 'mo login'
 		});
 	}
+});
+
+app.post('/posts', function (req, res) {
+	if (isLogin(req.cookies._nodejs_session)) {
+		var {title, content} = req.body;
+		var tags = req.body['tags[]'];
+		var created_at = moment();
+		var updated_at = null;
+		var id = ((new Date()) * Math.random()).toString(16).replace(/\./g, Math.round((Math.random() * 1000)).toString(8));
+		var author = Object.assign({}, _userInfo);
+		delete author.password;
+		var post = {
+			id,
+			title,
+			content,
+			created_at,
+			updated_at,
+			author,
+			tags
+		};
+		_posts.push(post);
+		res.json(post);
+	} else {
+		res.status(401).json({
+			msg: 'no login'
+		});
+	}
+});
+
+app.get('/posts', function (req, res) {
+	res.json(_posts);
 });
 
 function isLogin(cookie) {
