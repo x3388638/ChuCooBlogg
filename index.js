@@ -12,7 +12,7 @@ var _userInfo = {
 	gender: 'm',
 	address: 'Puli'
 };
-var _posts = {};
+var _posts = [];
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -24,11 +24,13 @@ app.use(express.static('web'));
 app.post('/login', function (req, res) {
 	var username = req.body.username;
 	var password = req.body.password;
-	if (username == 'admin' && password == '123456') {
+	if (username == 'admin' && password == _userInfo.password) {
 		var c = ((new Date()) * Math.random()).toString(16).replace(/\./g, Math.round((Math.random() * 1000)).toString(8));
 		_cookie = c;
 		res.cookie('_nodejs_session', c);
-		res.json(_userInfo);
+		var user = Object.assign({}, _userInfo);
+		delete user.password;
+		res.json(user);
 	} else {
 		res.status(401).json({
 			msg: 'wrong password'
@@ -59,6 +61,24 @@ app.get('/authors', function (req, res) {
 	} else {
 		res.status(401).json({
 			msg: 'no login'
+		});
+	}
+});
+
+app.patch('/authors/:id', function (req, res) {
+	if (isLogin(req.cookies._nodejs_session)) {
+		var {name, gender, address, password} = req.body;
+		var username = req.params.id;
+		password = password || _userInfo.password;
+		_userInfo = Object.assign({}, _userInfo, {name, gender, address, password});
+		var user = Object.assign({}, _userInfo);
+		delete user.password;
+		res.json({
+			user
+		});
+	} else {
+		res.status(401).json({
+			msg: 'mo login'
 		});
 	}
 });
