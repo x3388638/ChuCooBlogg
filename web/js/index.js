@@ -10,18 +10,18 @@ var index = (function () {
 	$('#btn-createPost').on('click', _handleCreatePost);
 	$('#post').on('click.readMore', '.btn-more', _handleReadMore);
 	$('#post').on('click.delPost', '.btn-delPost', _handleDelPost);
-	
+
 	/**
 	 * init
 	 */
 	_getUserInfo()
-		.done(function (data) {
-			_userInfo = data.user;
-			_renderPost();
-		})
-		.fail(function () {
-			_renderPost();
-		});
+	.done(function (data) {
+		_userInfo = data.user;
+		_renderPost();
+	})
+	.fail(function () {
+		_renderPost();
+	});
 
 	function _handleLogout() {
 		$.ajax({
@@ -29,9 +29,9 @@ var index = (function () {
 			type: 'post', 
 			dataType: 'json',
 			contentType: 'application/json', 
-      xhrFields: {
-        withCredentials: true
-      },
+			xhrFields: {
+				withCredentials: true
+			},
 			success: function (data) {
 				console.log(data);
 				_userInfo = null;
@@ -73,9 +73,9 @@ var index = (function () {
 			dataType: 'json',
 			contentType: 'application/json', 
 			data: JSON.stringify(data),
-      xhrFields: {
-        withCredentials: true
-      },
+			xhrFields: {
+				withCredentials: true
+			},
 			success: function (data) {
 				console.log(data);
 				localStorage.userData = JSON.stringify(data.user);
@@ -100,9 +100,9 @@ var index = (function () {
 			type: 'post', 
 			dataType: 'json',
 			contentType: 'application/json',
-      xhrFields: {
-        withCredentials: true
-      },
+			xhrFields: {
+				withCredentials: true
+			},
 			data: JSON.stringify({
 				title,
 				tags,
@@ -129,9 +129,9 @@ var index = (function () {
 			type: 'post',
 			dataType: 'json',
 			contentType: 'application/json',
-      xhrFields: {
-        withCredentials: true
-      },
+			xhrFields: {
+				withCredentials: true
+			},
 			success: function (data) {
 				console.log(data);
 				$('#postTitle').text(data.title);
@@ -178,11 +178,11 @@ var index = (function () {
 				type: 'get',
 				dataType: 'json',
 				contentType: 'application/json',
-        xhrFields: {
-          withCredentials: true
-        },
+				xhrFields: {
+					withCredentials: true
+				},
 			})
-		);
+			);
 	}
 
 	function _renderPost() {
@@ -191,9 +191,9 @@ var index = (function () {
 			type: 'get',
 			dataType: 'json',
 			contentType: 'application/json',
-      xhrFields: {
-        withCredentials: true
-      },
+			xhrFields: {
+				withCredentials: true
+			},
 			success: function (data) {
 				console.log(data);
 				$('#post').html('');
