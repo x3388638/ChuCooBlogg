@@ -68,7 +68,7 @@ var index = (function () {
 			name, gender, address, password
 		};
 		$.ajax({
-			url: `/authors/${username}`, 
+			url: `${CONFIG.API_BASE}/authors/${username}`, 
 			type: 'patch', 
 			dataType: 'json',
 			contentType: 'application/json', 
