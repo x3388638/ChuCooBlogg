@@ -11,10 +11,11 @@ var login = (function () {
 			url: `${CONFIG.API_BASE}/login`,
 			type: 'post',
 			dataType: 'json',
-			data: {
+			contentType: 'application/json',
+			data: JSON.stringify({
 				username,
 				password
-			}, 
+			}), 
 			success: function (data) {
 				console.log(data);
 				localStorage.userData = JSON.stringify(data);

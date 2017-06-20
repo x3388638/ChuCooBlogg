@@ -137,7 +137,7 @@ app.patch('/authors/:id', function (req, res) {
 app.post('/posts', function (req, res) {
 	if (isLogin(req.cookies._nodejs_session)) {
 		var {title, content} = req.body;
-		var tags = req.body['tags[]'];
+		var tags = req.body.tags;
 		var created_at = moment();
 		var updated_at = null;
 		var id = ((new Date()) * Math.random()).toString(16).replace(/\./g, Math.round((Math.random() * 1000)).toString(8));
@@ -152,7 +152,7 @@ app.post('/posts', function (req, res) {
 			author,
 			tags
 		};
-		_posts.push(post);
+		_posts = [post, ..._posts];
 		writeFile('posts', _posts);
 		res.json(post);
 	} else {
@@ -160,6 +160,18 @@ app.post('/posts', function (req, res) {
 			msg: 'no login'
 		});
 	}
+});
+
+app.post('/posts/:id', function (req, res) {
+	var id = req.params.id;
+	var post;
+	for (let p of _posts) {
+		if (p.id == id) {
+			post = p;
+			break;
+		}
+	}
+	res.json(post);
 });
 
 app.get('/posts', function (req, res) {

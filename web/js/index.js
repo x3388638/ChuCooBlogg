@@ -6,6 +6,7 @@ var index = (function () {
 	$('#btn-user').on('click', _handelOpenUserModal);
 	$('#btn-updateUser').on('click', _handleUpdateUser);
 	$('#btn-createPost').on('click', _handleCreatePost);
+	$('#post').on('click', '.btn-more', _handleReadMore);
 
 	_renderPost();
 
@@ -13,7 +14,8 @@ var index = (function () {
 		$.ajax({
 			url: `${CONFIG.API_BASE}/logout`, 
 			type: 'post', 
-			dataType: 'json', 
+			dataType: 'json',
+			contentType: 'application/json', 
 			success: function (data) {
 				console.log(data);
 				alert('Logout.');
@@ -31,6 +33,7 @@ var index = (function () {
 			url: `${CONFIG.API_BASE}/authors`,
 			type: 'get',
 			dataType: 'json',
+			contentType: 'application/json',
 			success: function (data) {
 				console.log(data);
 				$('#updateUserUsername').val(data.user.username);
@@ -60,8 +63,9 @@ var index = (function () {
 		$.ajax({
 			url: `/authors/${username}`, 
 			type: 'patch', 
-			dataType: 'json', 
-			data,
+			dataType: 'json',
+			contentType: 'application/json', 
+			data: JSON.stringify(data),
 			success: function (data) {
 				console.log(data);
 				localStorage.userData = JSON.stringify(data.user);
@@ -84,11 +88,12 @@ var index = (function () {
 			url: `${CONFIG.API_BASE}/posts`, 
 			type: 'post', 
 			dataType: 'json',
-			data: {
+			contentType: 'application/json',
+			data: JSON.stringify({
 				title,
 				tags,
 				content
-			},
+			}),
 			success: function (data) {
 				console.log(data);
 				$('#modal-createPost').modal('hide');
@@ -103,11 +108,36 @@ var index = (function () {
 		})
 	}
 
+	function _handleReadMore() {
+		var id = $(this).data('id');
+		$.ajax({
+			url: `${CONFIG.API_BASE}/posts/${id}`,
+			type: 'post',
+			dataType: 'json',
+			contentType: 'application/json',
+			success: function (data) {
+				console.log(data);
+				$('#postTitle').text(data.title);
+				$('#postTags').html('').append(data.tags.map(function (val, i) {
+					return `<span class="badge badge-default mr-1">${_htmlEncode(val)}</span>`;
+				}).toString().replace(/,/g, ''));
+				$('#postAuthor').text(data.author.name);
+				$('#postContent').html(_htmlEncode(data.content).replace(/\n/g, '<br />'));
+				$('#postTime').text(moment(post.created_at).format('YYYY/MM/DD HH:mm:ss'));
+				$('#modal-postContent').modal();
+			},
+			error: function (jqXHR) {
+				console.log(jqXHR);
+			}
+		});
+	}
+
 	function _renderPost() {
 		$.ajax({
 			url: `${CONFIG.API_BASE}/posts`,
 			type: 'get',
 			dataType: 'json',
+			contentType: 'application/json',
 			success: function (data) {
 				console.log(data);
 				$('#post').html('');
@@ -119,12 +149,12 @@ var index = (function () {
 									<div class="card-block">
 										<h4 class="card-title">${_htmlEncode(post.title)}</h4>
 										<h5 class="card-subtitle mb-2 text-muted">${_htmlEncode(post.author.name)}</h5>
-										<h6 class="card-subtitle mb-2 text-muted">${moment(post.created_at).format('YYYY/MM/DD')}</h6>
+										<h6 class="card-subtitle mb-2 text-muted">${moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')}</h6>
 										${post.tags.map(function (val, i) {
 											return `<span class="badge badge-default mr-1">${_htmlEncode(val)}</span>`
 										}).toString().replace(/,/g, '')}
 										<p class="card-text">${_htmlEncode(post.content).replace(/\n/g, '<br />').substring(0, 100)} ...</p>
-										<a class="btn-more" data-id="${post.id}" href="javascriptl:;" class="card-link">Read more...</a>
+										<a class="btn-more" data-id="${post.id}" href="javascript:;" class="card-link">Read more...</a>
 									</div>
 								</div>
 							</div>
