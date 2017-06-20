@@ -204,6 +204,7 @@ var index = (function () {
 								<div class="card post">
 									<div class="card-block">
 										${_userInfo ? `<span data-id="${post.id}" data-title="${post.title}" class="btn-delPost">&times;</span>` : ''}
+										<i class="fa fa-pencil btn-editPost" aria-hidden="true"></i>
 										<h4 class="card-title">${_htmlEncode(post.title)}</h4>
 										<h5 class="card-subtitle mb-2 text-muted">${_htmlEncode(post.author.name)}</h5>
 										<h6 class="card-subtitle mb-2 text-muted">${moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')}</h6>

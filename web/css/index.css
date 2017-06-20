@@ -13,3 +13,21 @@
 #post .post .btn-delPost:hover {
 	color: initial;
 }
+
+#post .post .btn-editPost {
+	position: absolute;
+	right: 28px;
+	top: 50px;
+	font-size: 14px;
+	cursor: pointer;
+	color: #b7b7b7;
+	display: none;
+}
+
+#post .post:hover .btn-editPost {
+	display: initial;
+}
+
+#post .post .btn-editPost:hover {
+	color: initial;
+}
