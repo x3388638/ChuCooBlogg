@@ -28,6 +28,9 @@ var index = (function () {
 			type: 'post', 
 			dataType: 'json',
 			contentType: 'application/json', 
+      xhrFields: {
+        withCredentials: true
+      },
 			success: function (data) {
 				console.log(data);
 				_userInfo = null;
@@ -69,6 +72,9 @@ var index = (function () {
 			dataType: 'json',
 			contentType: 'application/json', 
 			data: JSON.stringify(data),
+      xhrFields: {
+        withCredentials: true
+      },
 			success: function (data) {
 				console.log(data);
 				localStorage.userData = JSON.stringify(data.user);
@@ -93,6 +99,9 @@ var index = (function () {
 			type: 'post', 
 			dataType: 'json',
 			contentType: 'application/json',
+      xhrFields: {
+        withCredentials: true
+      },
 			data: JSON.stringify({
 				title,
 				tags,
@@ -119,6 +128,9 @@ var index = (function () {
 			type: 'post',
 			dataType: 'json',
 			contentType: 'application/json',
+      xhrFields: {
+        withCredentials: true
+      },
 			success: function (data) {
 				console.log(data);
 				$('#postTitle').text(data.title);
@@ -143,6 +155,9 @@ var index = (function () {
 				type: 'get',
 				dataType: 'json',
 				contentType: 'application/json',
+        xhrFields: {
+          withCredentials: true
+        },
 			})
 		);
 	}
@@ -153,6 +168,9 @@ var index = (function () {
 			type: 'get',
 			dataType: 'json',
 			contentType: 'application/json',
+      xhrFields: {
+        withCredentials: true
+      },
 			success: function (data) {
 				console.log(data);
 				$('#post').html('');
