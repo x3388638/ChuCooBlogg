@@ -4,14 +4,19 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var http = require('http').Server(app);
 var moment = require('moment');
+var fs = require('fs');
 
 var _cookie = null;
+
+/**
+ * init log file
+ */
 var _userInfo = {
-	username: 'admin',
-	password: '123456',
-	name: 'JonilaRS',
-	gender: 'm',
-	address: 'Puli'
+	// username: 'admin',
+	// password: '123456',
+	// name: 'JonilaRS',
+	// gender: 'm',
+	// address: 'Puli'
 };
 var _posts = [
 	// {
@@ -29,6 +34,35 @@ var _posts = [
 	// 	tags: []
 	// }
 ];
+
+if (fs.existsSync('./userInfo.log')) {
+	_userInfo = fs.readFileSync('./userInfo.log');
+	if (_userInfo == '') {
+		initUser();
+	} else {
+		_userInfo = JSON.parse(_userInfo);
+		if (!_userInfo.username ||
+			!_userInfo.password ||
+			!_userInfo.name ||
+			!_userInfo.gender ||
+			!_userInfo.address) {
+			initUser();
+		}
+	}
+} else {
+	initUser();
+}
+
+if (fs.existsSync('./userInfo.log')) {
+	_posts = fs.readFileSync('./posts.log');
+	if (_posts == '') {
+		initPosts();
+	} else {
+		_posts = JSON.parse(_posts);
+	}
+} else {
+	initPosts();
+}
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -87,6 +121,7 @@ app.patch('/authors/:id', function (req, res) {
 		var username = req.params.id;
 		password = password || _userInfo.password;
 		_userInfo = Object.assign({}, _userInfo, {name, gender, address, password});
+		writeFile('userInfo', _userInfo);
 		var user = Object.assign({}, _userInfo);
 		delete user.password;
 		res.json({
@@ -118,6 +153,7 @@ app.post('/posts', function (req, res) {
 			tags
 		};
 		_posts.push(post);
+		writeFile('posts', _posts);
 		res.json(post);
 	} else {
 		res.status(401).json({
@@ -132,6 +168,32 @@ app.get('/posts', function (req, res) {
 
 function isLogin(cookie) {
 	return cookie == _cookie;
+}
+
+function writeFile(fileName, content) {
+	fs.writeFile(`./${fileName}.log`, JSON.stringify(content), function (err) {
+		if (err) {
+			console.error(err);
+			return;
+		}
+		console.log(`[write file] ${fileName}.log`);
+	});
+}
+
+function initUser() {
+	_userInfo = {
+		username: 'admin',
+		password: '123456',
+		name: 'JonilaRS',
+		gender: 'm',
+		address: 'Puli'
+	};
+	writeFile('userInfo', _userInfo);
+}
+
+function initPosts() {
+	_posts = [];
+	writeFile('posts', _posts);
 }
 
 http.listen(65432, function(){
