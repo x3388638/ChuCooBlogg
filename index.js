@@ -53,7 +53,7 @@ if (fs.existsSync('./userInfo.log')) {
 	initUser();
 }
 
-if (fs.existsSync('./userInfo.log')) {
+if (fs.existsSync('./posts.log')) {
 	_posts = fs.readFileSync('./posts.log');
 	if (_posts == '') {
 		initPosts();
@@ -147,7 +147,7 @@ app.post('/posts', function (req, res) {
 			author,
 			tags
 		};
-		_posts = [post, ..._posts];
+		_posts = [..._posts, post];
 		writeFile('posts', _posts);
 		res.json(post);
 	} else {
