@@ -78,9 +78,9 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="newTags" class="col-2 col-form-label">Content</label>
+						<label for="newContent" class="col-2 col-form-label">Content</label>
 						<div class="col-10">
-							<textarea class="form-control" id="newContent"></textarea>
+							<textarea class="form-control" rows="20" id="newContent"></textarea>
 						</div>
 					</div>
 				</div>
@@ -173,6 +173,42 @@
 				</div>
 				<div class="modal-footer">
 					Created at&nbsp;<span id="postTime">2017/07/07</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal: edit post -->
+	<div class="modal fade" id="modal-editPost" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" >Edit post</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label for="editTitle" class="col-2 col-form-label">Title</label>
+						<div class="col-10">
+							<input class="form-control" type="text" id="editTitle">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="editTags" class="col-2 col-form-label">Tags</label>
+						<div class="col-10">
+							<input class="form-control" type="text" id="editTags">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="editContent" class="col-2 col-form-label">Content</label>
+						<div class="col-10">
+							<textarea class="form-control" rows="20" id="editContent"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="btn-updatePost" type="button" class="btn btn-primary">Update</button>
 				</div>
 			</div>
 		</div>

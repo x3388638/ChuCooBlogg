@@ -10,6 +10,8 @@ var index = (function () {
 	$('#btn-createPost').on('click', _handleCreatePost);
 	$('#post').on('click.readMore', '.btn-more', _handleReadMore);
 	$('#post').on('click.delPost', '.btn-delPost', _handleDelPost);
+	$('#post').on('click.editPost', '.btn-editPost', _handleOpenEditPostModal);
+	$('#btn-updatePost').on('click', _handleUpdatePost);
 
 	/**
 	 * init
@@ -126,7 +128,7 @@ var index = (function () {
 		var id = $(this).data('id');
 		$.ajax({
 			url: `${CONFIG.API_BASE}/posts/${id}`,
-			type: 'post',
+			type: 'get',
 			dataType: 'json',
 			contentType: 'application/json',
 			xhrFields: {
@@ -171,6 +173,62 @@ var index = (function () {
 		}
 	}
 
+	function _handleOpenEditPostModal() {
+		var id = $(this).data('id');
+		$('#modal-editPost').attr('data-id', id);
+		$.ajax({
+			url: `${CONFIG.API_BASE}/posts/${id}`,
+			type: 'get',
+			dataType: 'json',
+			contentType: 'application/json',
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function (data) {
+				console.log(data);
+				$('#editTitle').val(data.title);
+				$('#editTags').val(data.tags.toString());
+				$('#editContent').val(data.content);
+				$('#modal-editPost').modal();
+			},
+			error: function (jqXHR) {
+				console.log(jqXHR)
+			}
+		})
+	}
+
+	function _handleUpdatePost() {
+		var id = $("#modal-editPost").data('id');
+		var title = $('#editTitle').val();
+		var tags = $('#editTags').val().split(',');
+		var content = $('#editContent').val();
+		$.ajax({
+			url: `${CONFIG.API_BASE}/posts/${id}`, 
+			type: 'patch', 
+			dataType: 'json',
+			contentType: 'application/json',
+			xhrFields: {
+				withCredentials: true
+			},
+			data: JSON.stringify({
+				title,
+				tags,
+				content
+			}),
+			success: function (data) {
+				console.log(data);
+				$("#modal-editPost").modal('hide');
+				_renderPost();
+			},
+			error: function (jqXHR) {
+				console.log(jqXHR);
+				if (jqXHR.status == 401) {
+					alert('Login first');
+				}
+			}
+		})
+	}
+
 	function _getUserInfo() {
 		return (
 			$.ajax({
@@ -180,9 +238,9 @@ var index = (function () {
 				contentType: 'application/json',
 				xhrFields: {
 					withCredentials: true
-				},
+				}
 			})
-			);
+		);
 	}
 
 	function _renderPost() {
@@ -204,7 +262,7 @@ var index = (function () {
 								<div class="card post">
 									<div class="card-block">
 										${_userInfo ? `<span data-id="${post.id}" data-title="${post.title}" class="btn-delPost">&times;</span>` : ''}
-										<i class="fa fa-pencil btn-editPost" aria-hidden="true"></i>
+										${_userInfo ? `<i data-id="${post.id}" class="fa fa-pencil btn-editPost" aria-hidden="true"></i>` : ''}
 										<h4 class="card-title">${_htmlEncode(post.title)}</h4>
 										<h5 class="card-subtitle mb-2 text-muted">${_htmlEncode(post.author.name)}</h5>
 										<h6 class="card-subtitle mb-2 text-muted">${moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')}</h6>

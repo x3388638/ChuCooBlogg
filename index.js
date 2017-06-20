@@ -136,8 +136,7 @@ app.patch('/authors/:id', function (req, res) {
 
 app.post('/posts', function (req, res) {
 	if (isLogin(req.cookies._nodejs_session)) {
-		var {title, content} = req.body;
-		var tags = req.body.tags;
+		var {title, content, tags} = req.body;
 		var created_at = moment();
 		var updated_at = null;
 		var id = ((new Date()) * Math.random()).toString(16).replace(/\./g, Math.round((Math.random() * 1000)).toString(8));
@@ -162,7 +161,7 @@ app.post('/posts', function (req, res) {
 	}
 });
 
-app.post('/posts/:id', function (req, res) {
+app.get('/posts/:id', function (req, res) {
 	var id = req.params.id;
 	var post;
 	for (let p of _posts) {
@@ -200,7 +199,31 @@ app.delete('/posts/:id', function (req, res) {
 			msg: 'no login'
 		});
 	}
-})
+});
+
+app.patch('/posts/:id', function (req, res) {
+	if (isLogin(req.cookies._nodejs_session)) {
+		var {title, content, tags} = req.body;
+		var id = req.params.id;
+		var updated_at = moment();
+		var index = null;
+		for (let i = 0; i < _posts.length; i++) {
+			if (_posts[i].id == id) {
+				index = i;
+				break;
+			}
+		}
+		if (index !== null) {
+			_posts[index] = Object.assign({}, _posts[index], {title, content, updated_at, tags});
+			writeFile('posts', _posts);
+			res.json(_posts[index]);
+		}
+	} else {
+		res.status(401).json({
+			msg: 'no login'
+		});
+	}
+});
 
 function isLogin(cookie) {
 	return cookie == _cookie;
