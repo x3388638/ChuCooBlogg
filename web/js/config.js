@@ -1,3 +1,3 @@
 const CONFIG = {
-	API_BASE: ''
+	API_BASE: 'https://richegg.top'
 };

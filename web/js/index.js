@@ -18,7 +18,7 @@ var index = (function () {
 	 */
 	_getUserInfo()
 	.done(function (data) {
-		_userInfo = data.user;
+		_userInfo = data;
 		_renderPost();
 	})
 	.fail(function () {
@@ -80,8 +80,8 @@ var index = (function () {
 			},
 			success: function (data) {
 				console.log(data);
-				localStorage.userData = JSON.stringify(data.user);
-				_userInfo = data.user;
+				localStorage.userData = JSON.stringify(data);
+				_userInfo = data;
 				$('#modal-userInfo').modal('hide');
 			},
 			error: function (jqXHR) {
@@ -159,6 +159,9 @@ var index = (function () {
 				type: 'delete',
 				dataType: 'json', 
 				contentType: 'application/json',
+				xhrFields: {
+					withCredentials: true
+				},
 				success: function (data) {
 					console.log(data);
 					_renderPost();
@@ -232,7 +235,7 @@ var index = (function () {
 	function _getUserInfo() {
 		return (
 			$.ajax({
-				url: `${CONFIG.API_BASE}/authors`,
+				url: `${CONFIG.API_BASE}/login`,
 				type: 'get',
 				dataType: 'json',
 				contentType: 'application/json',

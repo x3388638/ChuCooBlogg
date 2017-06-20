@@ -101,13 +101,11 @@ app.post('/logout', function (req, res) {
 	}
 });
 
-app.get('/authors', function (req, res) {
+app.get('/login', function (req, res) {
 	if (isLogin(req.cookies._nodejs_session)) {
 		var user = Object.assign({}, _userInfo);
 		delete user.password;
-		res.json({
-			user
-		});
+		res.json(user);
 	} else {
 		res.status(401).json({
 			msg: 'no login'
@@ -124,9 +122,7 @@ app.patch('/authors/:id', function (req, res) {
 		writeFile('userInfo', _userInfo);
 		var user = Object.assign({}, _userInfo);
 		delete user.password;
-		res.json({
-			user
-		});
+		res.json(user);
 	} else {
 		res.status(401).json({
 			msg: 'mo login'
