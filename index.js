@@ -178,6 +178,30 @@ app.get('/posts', function (req, res) {
 	res.json(_posts);
 });
 
+app.delete('/posts/:id', function (req, res) {
+	if (isLogin(req.cookies._nodejs_session)) {
+		var id = req.params.id;
+		var index = null;
+		for (let i = 0; i < _posts.length; i++) {
+			if (_posts[i].id == id) {
+				index = i;
+				break;
+			}
+		}
+		if (index !== null) {
+			_posts.splice(index, 1);
+			writeFile('posts', _posts);
+			res.json({
+				remain: _posts.length
+			});
+		}
+	} else {
+		res.status(401).json({
+			msg: 'no login'
+		});
+	}
+})
+
 function isLogin(cookie) {
 	return cookie == _cookie;
 }

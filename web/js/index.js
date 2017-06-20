@@ -8,7 +8,8 @@ var index = (function () {
 	$('#btn-user').on('click', _handelOpenUserModal);
 	$('#btn-updateUser').on('click', _handleUpdateUser);
 	$('#btn-createPost').on('click', _handleCreatePost);
-	$('#post').on('click', '.btn-more', _handleReadMore);
+	$('#post').on('click.readMore', '.btn-more', _handleReadMore);
+	$('#post').on('click.delPost', '.btn-delPost', _handleDelPost);
 	
 	/**
 	 * init
@@ -136,6 +137,28 @@ var index = (function () {
 		});
 	}
 
+	function _handleDelPost() {
+		if (confirm(`Delete post [ ${$(this).data('title')} ] ?`)) {
+			var id = $(this).data('id');
+			$.ajax({
+				url: `${CONFIG.API_BASE}/posts/${id}`,
+				type: 'delete',
+				dataType: 'json', 
+				contentType: 'application/json',
+				success: function (data) {
+					console.log(data);
+					_renderPost();
+				},
+				error: function (jqXHR) {
+					console.log(jqXHR);
+					if (jqXHR.status == 401) {
+						alert('no login');
+					}
+				}
+			})
+		}
+	}
+
 	function _getUserInfo() {
 		return (
 			$.ajax({
@@ -162,7 +185,7 @@ var index = (function () {
 							<div class="col-8 offset-2">
 								<div class="card post">
 									<div class="card-block">
-										${_userInfo ? `<span data-id="${post.id}" class="btn-delPost">&times;</span>` : ''}
+										${_userInfo ? `<span data-id="${post.id}" data-title="${post.title}" class="btn-delPost">&times;</span>` : ''}
 										<h4 class="card-title">${_htmlEncode(post.title)}</h4>
 										<h5 class="card-subtitle mb-2 text-muted">${_htmlEncode(post.author.name)}</h5>
 										<h6 class="card-subtitle mb-2 text-muted">${moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')}</h6>
