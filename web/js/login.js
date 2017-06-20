@@ -12,6 +12,9 @@ var login = (function () {
 			type: 'post',
 			dataType: 'json',
 			contentType: 'application/json',
+      xhrFields: {
+        withCredentials: true
+      },
 			data: JSON.stringify({
 				username,
 				password
