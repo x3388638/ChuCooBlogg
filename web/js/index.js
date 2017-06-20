@@ -190,7 +190,10 @@ var index = (function () {
 			success: function (data) {
 				console.log(data);
 				$('#editTitle').val(data.title);
-				$('#editTags').val(data.tags.toString());
+				$('#editTags').tagsinput('removeAll');
+				for (let tag of data.tags) {
+					$('#editTags').tagsinput('add', tag);
+				}
 				$('#editContent').val(data.content);
 				$('#modal-editPost').modal();
 			},
