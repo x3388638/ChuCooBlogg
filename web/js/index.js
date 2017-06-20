@@ -20,9 +20,13 @@ var index = (function () {
 	.done(function (data) {
 		_userInfo = data;
 		_renderPost();
+		$('.forLogin').removeClass('hide');
+		$('.forNoLogin').addClass('hide');
 	})
 	.fail(function () {
 		_renderPost();
+		$('.forLogin').addClass('hide');
+		$('.forNoLogin').removeClass('hide');
 	});
 
 	function _handleLogout() {
@@ -39,6 +43,8 @@ var index = (function () {
 				_userInfo = null;
 				alert('Logout.');
 				_renderPost();
+				$('.forLogin').addClass('hide');
+				$('.forNoLogin').removeClass('hide');
 			}, 
 			error: function (jqXHR) {
 				if (jqXHR.status == 401) {

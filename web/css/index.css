@@ -31,3 +31,8 @@
 #post .post .btn-editPost:hover {
 	color: initial;
 }
+
+.forLogin.hide,
+.forNoLogin.hide {
+	display: none;
+}
