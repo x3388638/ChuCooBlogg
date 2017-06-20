@@ -117,13 +117,13 @@ var index = (function () {
 							<div class="col-8 offset-2">
 								<div class="card post">
 									<div class="card-block">
-										<h4 class="card-title">${post.title}</h4>
-										<h5 class="card-subtitle mb-2 text-muted">${post.author.name}</h5>
+										<h4 class="card-title">${_htmlEncode(post.title)}</h4>
+										<h5 class="card-subtitle mb-2 text-muted">${_htmlEncode(post.author.name)}</h5>
 										<h6 class="card-subtitle mb-2 text-muted">${moment(post.created_at).format('YYYY/MM/DD')}</h6>
 										${post.tags.map(function (val, i) {
-											return `<span class="badge badge-default mr-1">${val}</span>`
+											return `<span class="badge badge-default mr-1">${_htmlEncode(val)}</span>`
 										}).toString().replace(/,/g, '')}
-										<p class="card-text">${post.content.substring(0, 100)} ...</p>
+										<p class="card-text">${_htmlEncode(post.content).replace(/\n/g, '<br />').substring(0, 100)} ...</p>
 										<a class="btn-more" data-id="${post.id}" href="javascriptl:;" class="card-link">Read more...</a>
 									</div>
 								</div>
@@ -136,6 +136,10 @@ var index = (function () {
 				console.log(jqXHR);
 			}
 		})
+	}
+
+	function _htmlEncode(data) {
+		return ($('<span>').text(data).html());
 	}
 
 })();
