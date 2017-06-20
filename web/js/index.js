@@ -264,7 +264,7 @@ var index = (function () {
 				for (let post of data) {
 					$('#post').append(`
 						<div class="row mb-2">
-							<div class="col-8 offset-2">
+							<div class="col-lg-8 offset-lg-2">
 								<div class="card post">
 									<div class="card-block">
 										${_userInfo ? `<span data-id="${post.id}" data-title="${post.title}" class="btn-delPost">&times;</span>` : ''}
