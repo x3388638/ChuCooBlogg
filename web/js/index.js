@@ -1,4 +1,6 @@
 var index = (function () {
+	var _userInfo = null;
+
 	/**
 	 * bind event
 	 */
@@ -7,8 +9,18 @@ var index = (function () {
 	$('#btn-updateUser').on('click', _handleUpdateUser);
 	$('#btn-createPost').on('click', _handleCreatePost);
 	$('#post').on('click', '.btn-more', _handleReadMore);
-
-	_renderPost();
+	
+	/**
+	 * init
+	 */
+	_getUserInfo()
+		.done(function (data) {
+			_userInfo = data.user;
+			_renderPost();
+		})
+		.fail(function () {
+			_renderPost();
+		});
 
 	function _handleLogout() {
 		$.ajax({
@@ -18,7 +30,9 @@ var index = (function () {
 			contentType: 'application/json', 
 			success: function (data) {
 				console.log(data);
+				_userInfo = null;
 				alert('Logout.');
+				_renderPost();
 			}, 
 			error: function (jqXHR) {
 				if (jqXHR.status == 401) {
@@ -29,26 +43,15 @@ var index = (function () {
 	}
 
 	function _handelOpenUserModal() {
-		$.ajax({
-			url: `${CONFIG.API_BASE}/authors`,
-			type: 'get',
-			dataType: 'json',
-			contentType: 'application/json',
-			success: function (data) {
-				console.log(data);
-				$('#updateUserUsername').val(data.user.username);
-				$('#updateUserName').val(data.user.name);
-				$('#updateUserGender').val(data.user.gender);
-				$('#updateUserAddress').val(data.user.address);
-				$('#modal-userInfo').modal();
-			},
-			error: function (jqXHR) {
-				console.log(jqXHR);
-				if (jqXHR.status == 401) {
-					alert('Login first');
-				}
-			}
-		})
+		if (_userInfo) {
+			$('#updateUserUsername').val(_userInfo.username);
+			$('#updateUserName').val(_userInfo.name);
+			$('#updateUserGender').val(_userInfo.gender);
+			$('#updateUserAddress').val(_userInfo.address);
+			$('#modal-userInfo').modal();
+		} else {
+			alert('Login first');
+		}
 	}
 
 	function _handleUpdateUser() {
@@ -69,6 +72,7 @@ var index = (function () {
 			success: function (data) {
 				console.log(data);
 				localStorage.userData = JSON.stringify(data.user);
+				_userInfo = data.user;
 				$('#modal-userInfo').modal('hide');
 			},
 			error: function (jqXHR) {
@@ -132,6 +136,17 @@ var index = (function () {
 		});
 	}
 
+	function _getUserInfo() {
+		return (
+			$.ajax({
+				url: `${CONFIG.API_BASE}/authors`,
+				type: 'get',
+				dataType: 'json',
+				contentType: 'application/json',
+			})
+		);
+	}
+
 	function _renderPost() {
 		$.ajax({
 			url: `${CONFIG.API_BASE}/posts`,
@@ -147,6 +162,7 @@ var index = (function () {
 							<div class="col-8 offset-2">
 								<div class="card post">
 									<div class="card-block">
+										${_userInfo ? `<span data-id="${post.id}" class="btn-delPost">&times;</span>` : ''}
 										<h4 class="card-title">${_htmlEncode(post.title)}</h4>
 										<h5 class="card-subtitle mb-2 text-muted">${_htmlEncode(post.author.name)}</h5>
 										<h6 class="card-subtitle mb-2 text-muted">${moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')}</h6>

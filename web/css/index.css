@@ -1,0 +1,15 @@
+#post .post .btn-delPost {
+	position: absolute;
+	right: 30px;
+	color: #b7b7b7;
+	cursor: pointer;
+	display: none;
+}
+
+#post .post:hover .btn-delPost {
+	display: initial;
+}
+
+#post .post .btn-delPost:hover {
+	color: initial;
+}
