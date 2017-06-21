@@ -317,7 +317,14 @@ var index = (function () {
 		content = content.replace(regex, function (target) {
 			var alt = target.match(/\!\[(.*)\]\(/)[1] || '';
 			var src = target.match(/\]\((.*)\)/)[1];
-			return `<img src="${src}"" alt="${alt}" />`;
+			var $wrap = $('<div>').css('display', 'none');
+			$wrap.append(
+				$('<img>').attr({ src, alt })
+			);
+			$('body').append($wrap);
+			var img = $wrap.html();
+			$wrap.remove();
+			return img;
 		});
 		return content;
 	}
@@ -337,7 +344,6 @@ var index = (function () {
 		});
 		var sub = temp.substring(0, 100);
 		if (img && img.index < 100) {
-			console.log(temp)
 			sub = sub.splice(img.index, 1, img.target);
 		}
 		var result = _filterImg(_htmlEncode(sub)).replace(/\n/g, '<br />');
