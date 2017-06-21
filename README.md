@@ -34,7 +34,7 @@ ChuCooBlog API docs
 ## Data Model
 
 ### Author
-```json
+```
 {
   "username": (string),
   "name": (string),
@@ -44,7 +44,7 @@ ChuCooBlog API docs
 ```
 
 ### Post
-```json
+```
 {
   "id": (number),
   "title": (string),
@@ -71,7 +71,7 @@ ChuCooBlog API docs
 POST `/login`
 
 #### Request
-```json
+```
 {
   "username": (string),
   "password": (string)
@@ -85,7 +85,7 @@ Author object
 **範例**
 POST `/login`
 
-```json
+```
 {
   "username": 'yuer',
   "name": 'Yuer Lee',
@@ -107,7 +107,7 @@ Author object
 **範例**
 GET `/login`
 
-```json
+```
 {
   "username": 'yuer',
   "name": 'Yuer Lee',
@@ -128,7 +128,7 @@ Author object
 **範例**
 GET `/authors/yuer`
 
-```json
+```
 {
   "username": 'yuer',
   "name": 'Yuer Lee',
@@ -141,7 +141,7 @@ GET `/authors/yuer`
 PATCH `/authors/:id`
 
 #### Request
-```json
+```
 {
   "password": (string),
   "name": (string),
@@ -156,7 +156,7 @@ Author object
 **範例**
 PATCH `/authors/yuer`
 
-```json
+```
 {
   "username": 'yuer',
   "name": 'Yuer Lee',
@@ -177,7 +177,7 @@ Post object array
 **範例**
 GET `/posts`
 
-```json
+```
 [
   {
     "id": 1,
@@ -208,7 +208,7 @@ Post object
 **範例**
 GET `/posts/1`
 
-```json
+```
 {
   "id": 1,
   "title": '我來我見我吃飯',
@@ -231,7 +231,7 @@ POST `/posts`
 
 #### Request
 
-```json
+```
 {
   "title": (string),
   "content": (string),
@@ -245,7 +245,7 @@ Post object
 **範例**
 POST `/posts`
 
-```json
+```
 {
   "id": 1,
   "title": '我來我見我吃飯',
@@ -263,7 +263,7 @@ POST `/posts`
 ```
 
 ##### error
-```json
+```
 {
   "message" (string)
 }
@@ -274,7 +274,7 @@ POST `/posts`
 PATCH `/posts/:id`
 
 #### Request
-```json
+```
 {
   "title": (string),
   "content": (string),
@@ -289,7 +289,7 @@ Post object
 **範例**
 PATCH `/posts/1`
 
-```json
+```
 {
   "id": 1,
   "title": '我來我見我吃飯',
@@ -314,7 +314,7 @@ none
 
 #### Res
 ##### 200
-```json
+```
 {
   "remain": (number)
 }
