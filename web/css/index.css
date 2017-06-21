@@ -8,7 +8,11 @@
 }
 
 #post .post {
-	word-break: hide;
+	transition: .25s all;
+}
+
+#post .post:hover {
+	box-shadow: 0 0 2px 0 #000;
 }
 
 #post .post img {
