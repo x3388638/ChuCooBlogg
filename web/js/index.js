@@ -12,6 +12,7 @@ var index = (function () {
 	$('#post').on('click.delPost', '.btn-delPost', _handleDelPost);
 	$('#post').on('click.editPost', '.btn-editPost', _handleOpenEditPostModal);
 	$('#btn-updatePost').on('click', _handleUpdatePost);
+	$('#btn-changeAPI').on('click', _handleChangeAPI);
 
 	/**
 	 * init
@@ -29,9 +30,11 @@ var index = (function () {
 		$('.forNoLogin').removeClass('hide');
 	});
 
+	$('#api').val(CONFIG.getBase() || location.origin);
+
 	function _handleLogout() {
 		$.ajax({
-			url: `${CONFIG.API_BASE}/logout`, 
+			url: `${CONFIG.getBase()}/logout`, 
 			type: 'post', 
 			dataType: 'json',
 			contentType: 'application/json', 
@@ -76,7 +79,7 @@ var index = (function () {
 			name, gender, address, password
 		};
 		$.ajax({
-			url: `${CONFIG.API_BASE}/authors/${username}`, 
+			url: `${CONFIG.getBase()}/authors/${username}`, 
 			type: 'patch', 
 			dataType: 'json',
 			contentType: 'application/json', 
@@ -104,7 +107,7 @@ var index = (function () {
 		var tags = $('#newTags').val().split(',');
 		var content = $('#newContent').val();
 		$.ajax({
-			url: `${CONFIG.API_BASE}/posts`, 
+			url: `${CONFIG.getBase()}/posts`, 
 			type: 'post', 
 			dataType: 'json',
 			contentType: 'application/json',
@@ -136,7 +139,7 @@ var index = (function () {
 	function _handleReadMore() {
 		var id = $(this).data('id');
 		$.ajax({
-			url: `${CONFIG.API_BASE}/posts/${id}`,
+			url: `${CONFIG.getBase()}/posts/${id}`,
 			type: 'get',
 			dataType: 'json',
 			contentType: 'application/json',
@@ -164,7 +167,7 @@ var index = (function () {
 		if (confirm(`Delete post [ ${$(this).data('title')} ] ?`)) {
 			var id = $(this).data('id');
 			$.ajax({
-				url: `${CONFIG.API_BASE}/posts/${id}`,
+				url: `${CONFIG.getBase()}/posts/${id}`,
 				type: 'delete',
 				dataType: 'json', 
 				contentType: 'application/json',
@@ -189,7 +192,7 @@ var index = (function () {
 		var id = $(this).data('id');
 		$('#modal-editPost').attr('data-id', id);
 		$.ajax({
-			url: `${CONFIG.API_BASE}/posts/${id}`,
+			url: `${CONFIG.getBase()}/posts/${id}`,
 			type: 'get',
 			dataType: 'json',
 			contentType: 'application/json',
@@ -218,7 +221,7 @@ var index = (function () {
 		var tags = $('#editTags').val().split(',');
 		var content = $('#editContent').val();
 		$.ajax({
-			url: `${CONFIG.API_BASE}/posts/${id}`, 
+			url: `${CONFIG.getBase()}/posts/${id}`, 
 			type: 'patch', 
 			dataType: 'json',
 			contentType: 'application/json',
@@ -244,10 +247,16 @@ var index = (function () {
 		})
 	}
 
+	function _handleChangeAPI() {
+		var api = $('#api').val();
+		CONFIG.setBase(api);
+		location.reload();
+	}
+
 	function _getUserInfo() {
 		return (
 			$.ajax({
-				url: `${CONFIG.API_BASE}/login`,
+				url: `${CONFIG.getBase()}/login`,
 				type: 'get',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -260,7 +269,7 @@ var index = (function () {
 
 	function _renderPost() {
 		$.ajax({
-			url: `${CONFIG.API_BASE}/posts`,
+			url: `${CONFIG.getBase()}/posts`,
 			type: 'get',
 			dataType: 'json',
 			contentType: 'application/json',

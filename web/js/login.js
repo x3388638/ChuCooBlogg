@@ -2,13 +2,20 @@ var login = (function () {
 	/**
 	 * bind event
 	 */
-	$('#btn-login').on('click', _handleLogin)
+	$('#btn-login').on('click', _handleLogin);
+
+	/**
+	 * init
+	 */
+	$('#api').val(CONFIG.getBase() || location.origin);
 
 	function _handleLogin() {
 		var username = $('#username').val();
 		var password = $('#password').val();
+		var api = $('#api').val();
+		CONFIG.setBase(api);
 		$.ajax({
-			url: `${CONFIG.API_BASE}/login`,
+			url: `${CONFIG.getBase()}/login`,
 			type: 'post',
 			dataType: 'json',
 			contentType: 'application/json',
