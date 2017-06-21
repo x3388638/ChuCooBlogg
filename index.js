@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var http = require('http').Server(app);
 var moment = require('moment');
 var fs = require('fs');
+var cors = require('cors');
 
 var _cookie = null;
 
@@ -70,6 +71,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static('web'));
+app.use(cors({
+	methods: ['GET', 'POST', 'PATCH', 'OPTION', 'DELETE'],
+	credentials: true,
+	origin: true
+}));
 
 app.post('/login', function (req, res) {
 	var username = req.body.username;
