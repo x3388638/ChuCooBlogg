@@ -153,7 +153,7 @@ var index = (function () {
 					return `<span class="badge badge-default mr-1">${_htmlEncode(val)}</span>`;
 				}).toString().replace(/,/g, ''));
 				$('#postAuthor').text(data.author.name);
-				$('#postContent').html(_htmlEncode(data.content).replace(/\n/g, '<br />'));
+				$('#postContent').html(_filterImg(_htmlEncode(data.content)).replace(/\n/g, '<br />'));
 				$('#postTime').text(moment(post.created_at).format('YYYY/MM/DD HH:mm:ss'));
 				$('#modal-postContent').modal();
 			},
@@ -293,7 +293,7 @@ var index = (function () {
 										${post.tags.map(function (val, i) {
 											return `<span class="badge badge-default mr-1">${_htmlEncode(val)}</span>`
 										}).toString().replace(/,/g, '')}
-										<p class="card-text">${_htmlEncode(post.content).replace(/\n/g, '<br />').substring(0, 100)} ...</p>
+										<p class="card-text">${_abstract(post.content)}</p>
 										<a class="btn-more" data-id="${post.id}" href="javascript:;" class="card-link">Read more...</a>
 									</div>
 								</div>
@@ -311,5 +311,41 @@ var index = (function () {
 	function _htmlEncode(data) {
 		return ($('<span>').text(data).html());
 	}
+
+	function _filterImg(content) {
+		var regex = /\!\[.*\]\(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)\)/g;
+		content = content.replace(regex, function (target) {
+			var alt = target.match(/\!\[(.*)\]\(/)[1] || '';
+			var src = target.match(/\]\((.*)\)/)[1];
+			return `<img src="${src}"" alt="${alt}" />`;
+		});
+		return content;
+	}
+
+	function _abstract(content) {
+		var img;
+		var regex = /\!\[.*\]\(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)\)/g;
+		var temp = content.replace(regex, function (target) {
+			if (!img) {
+				var index = content.indexOf(target);
+				img = {
+					index,
+					target
+				};
+			}
+			return ' ';
+		});
+		var sub = temp.substring(0, 100);
+		if (img && img.index < 100) {
+			console.log(temp)
+			sub = sub.splice(img.index, 1, img.target);
+		}
+		var result = _filterImg(_htmlEncode(sub)).replace(/\n/g, '<br />');
+		return result;
+	}
+
+	String.prototype.splice = function(idx, rem, str) {
+		return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+	};
 
 })();

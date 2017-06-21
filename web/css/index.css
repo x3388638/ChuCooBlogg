@@ -1,3 +1,21 @@
+#modal-postContent {
+	word-break: break-word;
+}
+
+#modal-postContent img {
+	max-width: 100%;
+	display: block;
+}
+
+#post .post {
+	word-break: hide;
+}
+
+#post .post img {
+	max-width: 100%;
+	display: block;
+}
+
 #post .post .btn-delPost {
 	position: absolute;
 	right: 30px;
