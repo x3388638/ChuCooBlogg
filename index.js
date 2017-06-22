@@ -228,7 +228,7 @@ app.patch('/posts/:id', function (req, res) {
 });
 
 function isLogin(cookie) {
-	return cookie == _cookie;
+	return cookie === _cookie;
 }
 
 function writeFile(fileName, content) {
