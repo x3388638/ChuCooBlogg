@@ -83,7 +83,7 @@ app.post('/login', function (req, res) {
 	if (username == 'admin' && password == _userInfo.password) {
 		var c = ((new Date()) * Math.random()).toString(16).replace(/\./g, Math.round((Math.random() * 1000)).toString(8));
 		_cookie = c;
-		res.cookie('_nodejs_session', c);
+		res.cookie('_nodejs_session', c, { httpOnly: true });
 		var user = Object.assign({}, _userInfo);
 		delete user.password;
 		res.json(user);
