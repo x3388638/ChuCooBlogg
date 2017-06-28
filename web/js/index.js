@@ -290,7 +290,7 @@ var index = (function () {
 										<h4 class="card-title mr-2">${_htmlEncode(post.title)}</h4>
 										<h5 class="card-subtitle mb-2 text-muted">${_htmlEncode(post.author.name)}</h5>
 										<h6 class="card-subtitle mb-2 text-muted">${moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')}</h6>
-										${(typeof post.tags != 'string') &&post.tags.map(function (val, i) {
+										${tags && (typeof post.tags != 'string') && post.tags.map(function (val, i) {
 											return `<span class="badge badge-default mr-1">${_htmlEncode(val)}</span>`
 										}).toString().replace(/,/g, '')}
 										<p class="card-text">${_abstract(post.content)}</p>
