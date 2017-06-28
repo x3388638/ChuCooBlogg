@@ -280,6 +280,9 @@ var index = (function () {
 				console.log(data);
 				$('#post').html('');
 				for (let post of data) {
+					post.title = post.title || 'Unknown';
+					post.tags = post.tags || [];
+					post.content = post.content || '';
 					$('#post').prepend(`
 						<div class="row mb-2">
 							<div class="col-lg-8 offset-lg-2">
