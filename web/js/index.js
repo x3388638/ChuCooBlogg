@@ -153,7 +153,7 @@ var index = (function () {
 					return `<span class="badge badge-default mr-1">${_htmlEncode(val)}</span>`;
 				}).toString().replace(/,/g, ''));
 				$('#postAuthor').text(data.author.name);
-				$('#postContent').html(_filterImg(_htmlEncode(data.content)).replace(/\n/g, '<br />'));
+				$('#postContent').html(_filterYoutube(_filterImg(_htmlEncode(data.content))).replace(/\n/g, '<br />'));
 				$('#postTime').text(moment(post.created_at).format('YYYY/MM/DD HH:mm:ss'));
 				$('#modal-postContent').modal();
 			},
@@ -329,6 +329,17 @@ var index = (function () {
 		return content;
 	}
 
+	function _filterYoutube(content) {
+		var regex = /\{\%youtube\s([^\s.]*)\s\%\}/g;
+		content = content.replace(regex, function (target) {
+			var id = target.match(/\{\%youtube\s([^\s.]*)\s\%\}/)[1];
+			var iframe = `<iframe width="100%" height="400" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`
+			return iframe;
+		});
+
+		return content;
+	}
+
 	function _abstract(content) {
 		var img;
 		var regex = /\!\[.*\]\(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)\)/g;
@@ -346,7 +357,7 @@ var index = (function () {
 		if (img && img.index < 100) {
 			sub = sub.splice(img.index, 1, img.target);
 		}
-		var result = _filterImg(_htmlEncode(sub)).replace(/\n/g, '<br />');
+		var result = _filterYoutube(_filterImg(_htmlEncode(sub))).replace(/\n/g, '<br />');
 		return result;
 	}
 
