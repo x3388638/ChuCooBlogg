@@ -119,6 +119,19 @@ app.get('/login', function (req, res) {
 	}
 });
 
+app.get('/authors/:id', function (req, res) {
+	var id = req.params.id;
+	if (id == _userInfo.username) {
+		var user = Object.assign({}, _userInfo);
+		delete user.password;
+		res.json(user);
+	} else {
+		res.status(404).json({
+			message: 'user not found'
+		})
+	}
+});
+
 app.patch('/authors/:id', function (req, res) {
 	if (isLogin(req.cookies._nodejs_session)) {
 		var {name, gender, address, password} = req.body;
