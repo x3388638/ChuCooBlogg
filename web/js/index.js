@@ -148,6 +148,10 @@ var index = (function () {
 			},
 			success: function (data) {
 				console.log(data);
+				data.title = data.title || 'Unknown';
+				data.tags = data.tags || ['no', 'tags', 'here', '!'];
+				data.tags = data.tags.map ? data.tags : ['tags', 'should', 'be', 'array'];
+				data.content = data.content || '';
 				$('#postTitle').text(data.title);
 				$('#postTags').html('').append(data.tags.map(function (val, i) {
 					return `<span class="badge badge-default mr-1">${_htmlEncode(val)}</span>`;
