@@ -281,7 +281,8 @@ var index = (function () {
 				$('#post').html('');
 				for (let post of data) {
 					post.title = post.title || 'Unknown';
-					post.tags = post.tags || [];
+					post.tags = post.tags || ['no', 'tags', 'here', '!'];
+					post.tags = post.tags.map ? post.tags : ['tags', 'should', 'be', 'array'];
 					post.content = post.content || '';
 					$('#post').prepend(`
 						<div class="row mb-2">
@@ -293,7 +294,7 @@ var index = (function () {
 										<h4 class="card-title mr-2">${_htmlEncode(post.title)}</h4>
 										<h5 class="card-subtitle mb-2 text-muted">${_htmlEncode(post.author.name)}</h5>
 										<h6 class="card-subtitle mb-2 text-muted">${moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')}</h6>
-										${post.tags && (typeof post.tags != 'string') && post.tags.map(function (val, i) {
+										${post.tags.map(function (val, i) {
 											return `<span class="badge badge-default mr-1">${_htmlEncode(val)}</span>`
 										}).toString().replace(/,/g, '')}
 										<p class="card-text">${_abstract(post.content)}</p>
