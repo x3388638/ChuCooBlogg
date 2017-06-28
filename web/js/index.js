@@ -333,8 +333,14 @@ var index = (function () {
 		var regex = /\{\%youtube\s([^\s.]*)\s\%\}/g;
 		content = content.replace(regex, function (target) {
 			var id = target.match(/\{\%youtube\s([^\s.]*)\s\%\}/)[1];
-			var iframe = `<iframe width="100%" height="400" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`
-			return iframe;
+			var $wrap = $('<div>').css('display', 'none');
+			$wrap.append(
+				$('<iframe width="100%" height="400" frameborder="0" allowfullscreen></iframe>').attr('src', `https://www.youtube.com/embed/${id}`)
+			);
+			$('body').append($wrap);
+			var iframe = $wrap.html();
+			$wrap.remove();
+			return iframe
 		});
 
 		return content;
